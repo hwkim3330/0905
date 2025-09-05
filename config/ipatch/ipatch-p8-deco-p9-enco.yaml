@@ -1,0 +1,22 @@
+# Port Mapping Configuration: Port 8 -> Port 9
+# Defines the decoding/encoding path for traffic from Port 8 to Port 9
+
+# Decap Flow Table Entry
+- ? "/tsn-device:device/tsn-psfp:decap-flow-table/flow[flow-id='port8-to-port9']/input-port"
+  : "swp8"
+
+- ? "/tsn-device:device/tsn-psfp:decap-flow-table/flow[flow-id='port8-to-port9']/stream-id"
+  : 801
+
+- ? "/tsn-device:device/tsn-psfp:decap-flow-table/flow[flow-id='port8-to-port9']/priority"
+  : 3
+
+# Encap Flow Table Entry
+- ? "/tsn-device:device/tsn-psfp:encap-flow-table/flow[flow-id='port8-to-port9']/output-port"
+  : "swp9"
+
+- ? "/tsn-device:device/tsn-psfp:encap-flow-table/flow[flow-id='port8-to-port9']/stream-id"
+  : 801
+
+- ? "/tsn-device:device/tsn-psfp:encap-flow-table/flow[flow-id='port8-to-port9']/traffic-class"
+  : 0

@@ -1,0 +1,60 @@
+# CBS Idle Slope Configuration
+# Sets idle-slope to 100000 (100 Mbps) for all traffic classes
+
+# Port 8 CBS Configuration
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='0']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='1']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='2']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='3']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='4']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='5']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='6']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp8']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='7']/idle-slope"
+  : 100000
+
+# Port 9 CBS Configuration (Output Port)
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='0']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='1']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='2']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='3']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='4']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='5']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='6']/idle-slope"
+  : 100000
+
+- ? "/ietf-interfaces:interfaces/interface[name='swp9']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='7']/idle-slope"
+  : 100000
+
+# Port 10 CBS Configuration  
+- ? "/ietf-interfaces:interfaces/interface[name='swp10']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='0']/idle-slope"
+  : 100000
+
+# Port 11 CBS Configuration
+- ? "/ietf-interfaces:interfaces/interface[name='swp11']/ieee802-dot1q-bridge:bridge-port/ieee802-dot1q-sched-bridge:traffic-class-table[traffic-class='0']/idle-slope"
+  : 100000

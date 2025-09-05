@@ -1,0 +1,113 @@
+{
+  "experiment_metadata": {
+    "date": "2024-12-15",
+    "hardware": {
+      "main_board": "EVB-LAN9692-LM",
+      "secondary_board": "EVB-LAN9662",
+      "cpu": "ARM Cortex-A53 @ 1GHz",
+      "tsn_features": ["IEEE 802.1Qav", "IEEE 802.1Qbv", "IEEE 802.1AS-2020"]
+    },
+    "software": {
+      "firmware": "VelocityDRIVE-SP",
+      "configuration_method": "iPATCH YAML",
+      "protocol": "CORECONF/CoAP"
+    }
+  },
+  "baseline_results": {
+    "description": "Results without CBS enabled",
+    "duration_seconds": 10,
+    "traffic_load": {
+      "port_8": "1 Gbps",
+      "port_10": "1 Gbps", 
+      "port_11": "1 Gbps",
+      "total_input": "3 Gbps"
+    },
+    "measurements": {
+      "total_rx_packets": 15737339,
+      "total_tx_packets": 5607906,
+      "packets_lost": 10129433,
+      "drop_rate_percent": 64.37
+    }
+  },
+  "cbs_enabled_results": {
+    "description": "Results with CBS enabled (idle-slope = 100Mbps)",
+    "configuration": {
+      "idle_slope": 100000,
+      "traffic_classes": 8,
+      "queue_max_sdu": 1518
+    },
+    "port_statistics": [
+      {
+        "port": 8,
+        "role": "input",
+        "traffic_class": 0,
+        "rx_packets": 141310,
+        "tx_packets": 274,
+        "status": "CBS applied, limited transmission"
+      },
+      {
+        "port": 9,
+        "role": "output",
+        "traffic_class": 0,
+        "rx_packets": 74,
+        "tx_packets": 1158538,
+        "status": "CBS cumulative transmission normal"
+      },
+      {
+        "port": 10,
+        "role": "input",
+        "traffic_class": 0,
+        "rx_packets": 1131457,
+        "tx_packets": 220,
+        "status": "Massive drops, CBS not applied"
+      },
+      {
+        "port": 11,
+        "role": "input",
+        "traffic_class": 0,
+        "rx_packets": 796331,
+        "tx_packets": 171,
+        "status": "Massive drops, CBS not applied"
+      }
+    ]
+  },
+  "performance_metrics": {
+    "throughput": {
+      "baseline": {
+        "average_mbps": 448.6,
+        "stability": "high_variance"
+      },
+      "cbs_enabled": {
+        "average_mbps": 98.7,
+        "stability": "stable"
+      }
+    },
+    "latency": {
+      "baseline": {
+        "min_ms": 0.5,
+        "max_ms": 250,
+        "average_ms": 45.3,
+        "jitter_ms": 78.2
+      },
+      "cbs_enabled": {
+        "min_ms": 0.8,
+        "max_ms": 12.5,
+        "average_ms": 3.2,
+        "jitter_ms": 2.1
+      }
+    }
+  },
+  "conclusions": {
+    "key_findings": [
+      "CBS successfully controls output rate according to idle-slope configuration",
+      "Port 8 showed proper CBS operation with controlled transmission",
+      "Ports 10 and 11 require configuration verification for proper CBS application",
+      "Output port maintains stable transmission rate under overload conditions with CBS"
+    ],
+    "improvements_needed": [
+      "Ensure uniform CBS configuration across all input ports",
+      "Verify queue mapping for all traffic paths",
+      "Test various idle-slope parameters for optimization"
+    ]
+  }
+}
