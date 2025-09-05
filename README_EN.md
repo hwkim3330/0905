@@ -1,181 +1,173 @@
 # Implementation and Performance Evaluation of a 4-Port Credit-Based Shaper TSN Switch for QoS Provisioning in Automotive Ethernet
 
-## 4-포트 크레딧 기반 셰이퍼(Credit-Based Shaper) TSN 스위치를 활용한 차량용 QoS 보장 구현 및 성능 평가
-
 <div align="center">
 
 [![English](https://img.shields.io/badge/Language-English-blue)](README_EN.md)
 [![Korean](https://img.shields.io/badge/Language-한국어-red)](README_KR.md)
 [![GitHub Pages](https://img.shields.io/badge/Demo-GitHub%20Pages-green)](https://hwkim3330.github.io/0905/)
 
-**📖 Select Language / 언어 선택:**
-**[English](README_EN.md) | [한국어](README_KR.md)**
-
 </div>
 
 ---
 
-## Abstract / 요약
+## Abstract
 
-### English
 With the recent evolution of electrical/electronic (E/E) architecture toward a zonal structure, in-vehicle networks are required to reliably transmit diverse traffic types, including high-bandwidth multimedia streams and critical control data. To meet this demand, we implemented a system using a Credit-Based Shaper (CBS) and conducted tests and performance evaluations using a 4-port automotive TSN (Time-Sensitive Networking) switch. Our experimental setup included multiple video stream sources, two video receivers, and a best-effort (BE) traffic generator to induce network congestion. We then compared and analyzed the network's performance with and without the CBS function activated. The results showed that applying CBS achieved stable playback and minimal frame loss through the priority control of time-sensitive video streams, even under network overload. The performance metrics measured in terms of throughput, frame loss rate, and video playback quality demonstrate that CBS is an effective means of ensuring QoS for in-vehicle infotainment systems. Our research confirms the applicability of the CBS mechanism as a practical solution for guaranteeing QoS for various traffic types in a multi-domain zonal vehicle architecture and is expected to contribute to the future advancement of autonomous driving and connected car technologies.
 
-### 한국어
-최근 전기/전자(E/E) 아키텍처가 영역(존) 기반 구조로 진화함에 따라, 차량 내 네트워크는 고대역폭 멀티미디어 스트림과 중요 제어 데이터를 포함한 다양한 트래픽 유형의 신뢰성 있는 전송을 요구받고 있다. 이 논문은 이러한 요구에 대응하기 위해 크레딧 기반 셰이퍼(Credit-Based Shaper, CBS)를 이용해 시스템을 구현하고, 이를 4포트 차량용 TSN(Time-Sensitive Networking) 스위치를 이용해 시험 및 성능 평가를 수행하였다. 실험 환경으로는 다수의 영상 스트림 소스, 두 개의 영상 수신기, 네트워크 혼잡을 유발하는 베스트 에포트(BE) 트래픽 생성기를 구성하였으며, CBS 기능 활성화 여부에 따른 네트워크 성능을 비교 분석하였다. 그 결과, CBS를 적용한 경우 네트워크 과부하 상황에서도 시간 민감성 영상 스트림의 우선순위 제어를 통해 안정적인 재생과 최소한의 프레임 손실을 달성하는 것으로 나타났다. 처리량, 프레임 손실률, 영상 재생 품질 측면에서 측정된 성능 지표는 CBS가 차량용 인포테인먼트 시스템의 QoS(Quality of Service) 보장에 효과적인 수단임을 입증한다.
+## Keywords
 
-## Keywords / 키워드
-- **Automotive Ethernet** (차량용 이더넷)
-- **Credit-Based Shaper** (크레딧 기반 셰이퍼)
-- **Quality of Service** (서비스 품질)
-- **Zonal Architecture** (존 아키텍처)
-- **Infotainment** (인포테인먼트)
-- **Time-Sensitive Networking (TSN)** (시간 민감 네트워킹)
+- **Automotive Ethernet**
+- **Credit-Based Shaper**
+- **Quality of Service**
+- **Zonal Architecture**
+- **Infotainment**
+- **Time-Sensitive Networking (TSN)**
 - **IEEE 802.1Qav**
-- **Traffic Shaping** (트래픽 셰이핑)
+- **Traffic Shaping**
 
 ---
 
-## 1. Introduction / 서론
+## 1. Introduction
 
-### 1.1 Research Background / 연구 배경
+### 1.1 Research Background
 
-현대 차량의 전기/전자(E/E) 아키텍처는 도메인 중심에서 존(Zone) 기반 구조로 급속히 진화하고 있다. 이러한 변화는 자율주행, 첨단 운전자 지원 시스템(ADAS), 인포테인먼트 시스템의 발전과 함께 차량 내 데이터 트래픽이 폭발적으로 증가함에 따른 필연적인 결과이다. 특히, 고해상도 카메라, 라이다, 레이더 센서들이 생성하는 대용량 데이터와 실시간 제어 신호가 공존하는 네트워크 환경에서 각 트래픽 유형에 대한 서비스 품질(QoS) 보장은 차량 안전성과 사용자 경험 측면에서 매우 중요한 과제가 되었다.
+The electrical/electronic (E/E) architecture of modern vehicles is rapidly evolving from domain-centric to zone-based structures. This transformation is an inevitable result of the explosive growth in in-vehicle data traffic accompanying the development of autonomous driving, advanced driver assistance systems (ADAS), and infotainment systems. Particularly, in network environments where large amounts of data generated by high-resolution cameras, LiDAR, and radar sensors coexist with real-time control signals, ensuring quality of service (QoS) for each traffic type has become a very important challenge in terms of vehicle safety and user experience.
 
-전통적인 차량 네트워크 기술인 CAN(Controller Area Network)은 최대 1 Mbps의 제한된 대역폭을 제공하며, FlexRay는 10 Mbps까지 지원하지만 높은 구현 비용과 복잡성으로 인해 광범위한 채택에 한계가 있었다. 반면, 이더넷 기반 네트워크는 100 Mbps에서 10 Gbps까지의 확장 가능한 대역폭을 제공하며, 표준화된 프로토콜과 광범위한 생태계 지원으로 차량용 네트워크의 새로운 백본으로 자리잡고 있다.
+Traditional automotive network technologies such as CAN (Controller Area Network) provide limited bandwidth of up to 1 Mbps, and FlexRay supports up to 10 Mbps but has limitations for widespread adoption due to high implementation costs and complexity. In contrast, Ethernet-based networks provide scalable bandwidth from 100 Mbps to 10 Gbps and are establishing themselves as the new backbone of automotive networks with standardized protocols and extensive ecosystem support.
 
-### 1.2 Time-Sensitive Networking and Credit-Based Shaper / TSN과 크레딧 기반 셰이퍼
+### 1.2 Time-Sensitive Networking and Credit-Based Shaper
 
-Time-Sensitive Networking(TSN)은 IEEE 802.1 워킹 그룹에서 개발한 표준 집합으로, 표준 이더넷 네트워크에서 실시간성과 신뢰성을 보장하기 위한 다양한 메커니즘을 정의한다. TSN의 주요 구성 요소는 다음과 같다:
+Time-Sensitive Networking (TSN) is a set of standards developed by the IEEE 802.1 working group that defines various mechanisms to ensure real-time performance and reliability in standard Ethernet networks. The main components of TSN are as follows:
 
-1. **시간 동기화 (IEEE 802.1AS-2020)**: 네트워크 전체에 걸쳐 나노초 수준의 정밀한 시간 동기화를 제공
-2. **트래픽 스케줄링 (IEEE 802.1Qbv)**: Time-Aware Shaper(TAS)를 통한 시간 기반 트래픽 제어
-3. **트래픽 셰이핑 (IEEE 802.1Qav)**: Credit-Based Shaper(CBS)를 통한 대역폭 예약 및 버스트 제어
-4. **프레임 복제 및 제거 (IEEE 802.1CB)**: 중요 트래픽의 신뢰성 향상
-5. **스트림 예약 프로토콜 (IEEE 802.1Qat)**: 엔드투엔드 자원 예약
+1. **Time Synchronization (IEEE 802.1AS-2020)**: Provides nanosecond-level precise time synchronization across the entire network
+2. **Traffic Scheduling (IEEE 802.1Qbv)**: Time-based traffic control through Time-Aware Shaper (TAS)
+3. **Traffic Shaping (IEEE 802.1Qav)**: Bandwidth reservation and burst control through Credit-Based Shaper (CBS)
+4. **Frame Replication and Elimination (IEEE 802.1CB)**: Improving reliability of critical traffic
+5. **Stream Reservation Protocol (IEEE 802.1Qat)**: End-to-end resource reservation
 
-이 중 IEEE 802.1Qav에 정의된 Credit-Based Shaper(CBS)는 오디오/비디오 브리징(AVB) 애플리케이션을 위해 개발된 트래픽 셰이핑 메커니즘으로, 각 트래픽 클래스에 대해 대역폭을 예약하고 버스트를 제어하여 지연 시간을 예측 가능하게 만든다.
+Among these, the Credit-Based Shaper (CBS) defined in IEEE 802.1Qav is a traffic shaping mechanism developed for Audio/Video Bridging (AVB) applications, which reserves bandwidth for each traffic class and controls bursts to make latency predictable.
 
-### 1.3 Research Objectives and Contributions / 연구 목적 및 기여
+### 1.3 Research Objectives and Contributions
 
-본 연구의 주요 목적은 다음과 같다:
+The main objectives of this research are as follows:
 
-1. **실제 하드웨어 기반 CBS 구현 및 검증**: 상용 TSN 스위치 칩셋(Microchip LAN9692/9662)을 활용하여 CBS 메커니즘을 구현하고, 실제 네트워크 환경에서의 동작을 검증
+1. **Actual Hardware-Based CBS Implementation and Verification**: Implement CBS mechanisms using commercial TSN switch chipsets (Microchip LAN9692/9662) and verify operation in actual network environments
 
-2. **정량적 성능 평가**: 네트워크 과부하 상황에서 CBS 적용 전후의 다양한 성능 지표(처리량, 패킷 손실률, 지연 시간, 지터) 측정 및 비교 분석
+2. **Quantitative Performance Evaluation**: Measure and comparatively analyze various performance metrics (throughput, packet loss rate, latency, jitter) before and after CBS application under network overload situations
 
-3. **차량 네트워크 적용 가능성 검증**: 멀티미디어 스트림과 베스트 에포트 트래픽이 혼재된 실제 차량 네트워크 환경을 모사하여 QoS 보장 효과 확인
+3. **Automotive Network Applicability Verification**: Confirm QoS guarantee effects by simulating actual automotive network environments where multimedia streams and best-effort traffic coexist
 
-4. **구현 가이드라인 제공**: YAML 기반 선언적 설정 방식을 통한 재현 가능한 TSN 구성 방법론 문서화 및 공유
+4. **Implementation Guidelines**: Document and share reproducible TSN configuration methodologies through YAML-based declarative configuration methods
 
-본 연구의 주요 기여사항은 다음과 같다:
+The main contributions of this research are as follows:
 
-- **실무 적용 가능한 구현 방법론**: 이론적 연구를 넘어 실제 하드웨어에서 동작하는 CBS 구현 및 설정 방법 제시
-- **체계적인 성능 분석 프레임워크**: 다양한 트래픽 부하 조건에서의 CBS 성능을 정량적으로 평가할 수 있는 측정 방법론 확립
-- **오픈소스 구현 공유**: GitHub를 통한 설정 파일, 스크립트, 실험 데이터 공개로 연구 재현성 확보
-- **실시간 웹 기반 시각화**: GitHub Pages를 활용한 인터랙티브 결과 시각화로 연구 결과의 접근성 향상
+- **Practically Applicable Implementation Methodology**: Presenting CBS implementation and configuration methods that work on actual hardware beyond theoretical research
+- **Systematic Performance Analysis Framework**: Establishing measurement methodologies that can quantitatively evaluate CBS performance under various traffic load conditions
+- **Open Source Implementation Sharing**: Securing research reproducibility by publishing configuration files, scripts, and experimental data through GitHub
+- **Real-time Web-based Visualization**: Improving accessibility of research results through interactive result visualization using GitHub Pages
 
 ---
 
-## 2. Credit-Based Shaper Theory / 크레딧 기반 셰이퍼 이론
+## 2. Credit-Based Shaper Theory
 
-### 2.1 CBS Operating Principle / CBS 동작 원리
+### 2.1 CBS Operating Principle
 
-Credit-Based Shaper(CBS)는 IEEE 802.1Qav 표준에 정의된 트래픽 셰이핑 메커니즘으로, 토큰 버킷 알고리즘의 변형인 크레딧 기반 메커니즘을 사용한다. CBS의 핵심 개념은 각 트래픽 클래스에 대해 '크레딧(credit)'이라는 가상의 통화를 관리하며, 이 크레딧이 양수일 때만 프레임 전송을 허용하는 것이다.
+Credit-Based Shaper (CBS) is a traffic shaping mechanism defined in the IEEE 802.1Qav standard, using a credit-based mechanism that is a variant of the token bucket algorithm. The core concept of CBS is to manage a virtual currency called 'credit' for each traffic class and allow frame transmission only when this credit is positive.
 
-#### 2.1.1 Credit Dynamics / 크레딧 동적 변화
+#### 2.1.1 Credit Dynamics
 
-트래픽 클래스 c의 크레딧 값 credit_c는 시간에 따라 다음과 같이 변화한다:
+The credit value credit_c of traffic class c changes over time as follows:
 
-**큐가 비어 있고 크레딧이 음수일 때:**
+**When queue is empty and credit is negative:**
 ```
 d(credit_c)/dt = idleSlope
 ```
 
-**프레임을 전송 중일 때:**
+**When transmitting frames:**
 ```
 d(credit_c)/dt = sendSlope = idleSlope - portTransmitRate
 ```
 
-여기서:
-- `idleSlope`: 큐가 유휴 상태일 때 크레딧이 증가하는 속도 (bits/second)
-- `sendSlope`: 프레임 전송 중 크레딧이 감소하는 속도 (bits/second)
-- `portTransmitRate`: 물리적 링크의 전송 속도 (bits/second)
+Where:
+- `idleSlope`: Rate at which credits increase when queue is idle (bits/second)
+- `sendSlope`: Rate at which credits decrease during frame transmission (bits/second)
+- `portTransmitRate`: Physical link transmission rate (bits/second)
 
-#### 2.1.2 Credit Bounds / 크레딧 경계
+#### 2.1.2 Credit Bounds
 
-크레딧은 다음과 같은 상한과 하한을 가진다:
+Credits have the following upper and lower bounds:
 
-- **hiCredit**: 크레딧의 최대값. 일반적으로 한 프레임의 최대 크기에 해당
-- **loCredit**: 크레딧의 최소값. 일반적으로 음수이며, 버스트 크기를 제한
+- **hiCredit**: Maximum credit value. Generally corresponds to the maximum size of one frame
+- **loCredit**: Minimum credit value. Generally negative, limiting burst size
 
 ```
 loCredit ≤ credit_c ≤ hiCredit
 ```
 
-#### 2.1.3 Transmission Eligibility / 전송 자격
+#### 2.1.3 Transmission Eligibility
 
-프레임 전송은 다음 조건을 만족할 때만 가능하다:
+Frame transmission is possible only when the following conditions are met:
 
-1. `credit_c ≥ 0`: 크레딧이 비음수여야 함
-2. 큐에 전송 대기 중인 프레임이 존재
-3. 상위 우선순위 큐가 모두 비어있거나 크레딧이 부족
+1. `credit_c ≥ 0`: Credit must be non-negative
+2. Frames waiting for transmission exist in the queue
+3. All higher priority queues are empty or lack sufficient credit
 
-### 2.2 Mathematical Analysis / 수학적 분석
+### 2.2 Mathematical Analysis
 
-#### 2.2.1 Bandwidth Guarantee / 대역폭 보장
+#### 2.2.1 Bandwidth Guarantee
 
-트래픽 클래스 c에 대한 평균 대역폭 보장은 다음과 같이 계산된다:
+The average bandwidth guarantee for traffic class c is calculated as follows:
 
 ```
 BandwidthGuarantee_c = (idleSlope_c / portTransmitRate) × 100%
 ```
 
-#### 2.2.2 Worst-Case Latency / 최악 경우 지연
+#### 2.2.2 Worst-Case Latency
 
-네트워크 칼큘러스를 이용한 최악 경우 지연 분석:
+Worst-case latency analysis using network calculus:
 
 ```
 D_max = (L_max / idleSlope) + (Σ(L_i) / portTransmitRate)
 ```
 
-여기서:
-- `D_max`: 최대 지연 시간
-- `L_max`: 최대 프레임 크기
-- `L_i`: 간섭 프레임 크기
+Where:
+- `D_max`: Maximum latency
+- `L_max`: Maximum frame size
+- `L_i`: Interfering frame size
 
-#### 2.2.3 Burst Tolerance / 버스트 허용량
+#### 2.2.3 Burst Tolerance
 
-CBS가 흡수할 수 있는 최대 버스트 크기:
+Maximum burst size that CBS can absorb:
 
 ```
 BurstSize_max = hiCredit - loCredit
 ```
 
-### 2.3 CBS Parameters Configuration / CBS 파라미터 설정
+### 2.3 CBS Parameters Configuration
 
-#### 2.3.1 Design Constraints / 설계 제약사항
+#### 2.3.1 Design Constraints
 
-CBS 파라미터 설정 시 다음 제약사항을 만족해야 한다:
+When setting CBS parameters, the following constraints must be satisfied:
 
-1. **대역폭 제약**: 모든 트래픽 클래스의 idleSlope 합이 포트 속도를 초과할 수 없음
+1. **Bandwidth Constraint**: Sum of idleSlope of all traffic classes cannot exceed port speed
    ```
    Σ(idleSlope_i) ≤ portTransmitRate
    ```
 
-2. **크레딧 제약**: hiCredit과 loCredit은 최대 프레임 크기를 고려하여 설정
+2. **Credit Constraint**: hiCredit and loCredit should be set considering maximum frame size
    ```
    hiCredit ≥ MaxFrameSize
    loCredit ≤ -MaxFrameSize
    ```
 
-3. **우선순위 제약**: 높은 우선순위 트래픽 클래스가 더 큰 idleSlope를 가져야 함
+3. **Priority Constraint**: Higher priority traffic classes should have larger idleSlope
    ```
    Priority(TC_i) > Priority(TC_j) → idleSlope_i ≥ idleSlope_j
    ```
 
-#### 2.3.2 Parameter Calculation Example / 파라미터 계산 예제
+#### 2.3.2 Parameter Calculation Example
 
-1 Gbps 링크에서 비디오 스트림(15 Mbps)을 위한 CBS 설정:
+CBS configuration for video stream (15 Mbps) on 1 Gbps link:
 
 ```
 Given:
@@ -192,9 +184,9 @@ Calculations:
 
 ---
 
-## 3. System Implementation / 시스템 구현
+## 3. System Implementation
 
-### 3.1 Hardware Platform / 하드웨어 플랫폼
+### 3.1 Hardware Platform
 
 #### 3.1.1 Primary Platform: EVB-LAN9692-LM
 
@@ -235,7 +227,7 @@ Calculations:
 - **SODIMM Interface**: 200-pin edge connector for expansion
 - **Power**: 12V DC input, <10W typical consumption
 
-### 3.2 Software Architecture / 소프트웨어 아키텍처
+### 3.2 Software Architecture
 
 #### 3.2.1 VelocityDRIVE-SP Firmware Stack
 
@@ -282,7 +274,7 @@ module: ieee802-dot1q-bridge
               +--rw lo-credit?       int32
 ```
 
-### 3.3 Implementation Details / 구현 상세
+### 3.3 Implementation Details
 
 #### 3.3.1 Network Topology
 
@@ -381,7 +373,7 @@ generate_traffic eth2 "10.0.100.3" "10.0.100.2" 5000 &
 generate_traffic eth3 "10.0.100.4" "10.0.100.2" 5000 &
 ```
 
-### 3.4 Measurement Methodology / 측정 방법론
+### 3.4 Measurement Methodology
 
 #### 3.4.1 Data Collection Framework
 
@@ -429,31 +421,31 @@ class TSNPerformanceMonitor:
 
 #### 3.4.2 Performance Metrics
 
-1. **Throughput (처리량)**
+1. **Throughput**
    - Definition: Successful data transmission rate
    - Measurement: Bytes transmitted per second
    - Target: Stable at configured idle-slope value
 
-2. **Packet Loss Rate (패킷 손실률)**
+2. **Packet Loss Rate**
    - Definition: Ratio of dropped packets to total received
    - Measurement: (RX - TX) / RX × 100%
    - Target: < 0.1% for time-sensitive traffic
 
-3. **Latency (지연 시간)**
+3. **Latency**
    - Definition: End-to-end transmission delay
    - Measurement: Hardware timestamping at ingress/egress
    - Target: < 2ms for automotive applications
 
-4. **Jitter (지터)**
+4. **Jitter**
    - Definition: Variation in packet delay
    - Measurement: Standard deviation of latency samples
    - Target: < 500μs for video streaming
 
 ---
 
-## 4. Experimental Results and Analysis / 실험 결과 및 분석
+## 4. Experimental Results and Analysis
 
-### 4.1 Baseline Performance (CBS Disabled) / 기준선 성능 (CBS 비활성)
+### 4.1 Baseline Performance (CBS Disabled)
 
 #### 4.1.1 Measurement Results
 
@@ -492,7 +484,7 @@ Average  | 448.6            | 64.37         | 9,903
 Std Dev  | 47.2             | 5.1           | 1,432
 ```
 
-### 4.2 CBS-Enabled Performance / CBS 활성화 성능
+### 4.2 CBS-Enabled Performance
 
 #### 4.2.1 Configuration Parameters
 
@@ -538,7 +530,7 @@ Port 10 & 11 (Configuration Pending):
   Action Required: Configuration verification
 ```
 
-### 4.3 Comparative Analysis / 비교 분석
+### 4.3 Comparative Analysis
 
 #### 4.3.1 Throughput Characteristics
 
@@ -590,7 +582,7 @@ The frame loss patterns revealed distinct behaviors:
 - Credit-based admission control
 - Traffic class isolation
 
-### 4.4 Video Streaming Performance / 비디오 스트리밍 성능
+### 4.4 Video Streaming Performance
 
 #### 4.4.1 Test Configuration
 
@@ -629,7 +621,7 @@ Real-world video streaming tests were conducted:
 - Perfect audio-video synchronization
 - Broadcast quality maintained
 
-### 4.5 Statistical Analysis / 통계 분석
+### 4.5 Statistical Analysis
 
 #### 4.5.1 Confidence Intervals
 
@@ -661,9 +653,9 @@ Result: Reject H₀ (CBS significantly reduces variance)
 
 ---
 
-## 5. Discussion / 토론
+## 5. Discussion
 
-### 5.1 Interpretation of Results / 결과 해석
+### 5.1 Interpretation of Results
 
 #### 5.1.1 CBS Effectiveness
 
@@ -687,7 +679,7 @@ The incomplete CBS application on Ports 10 and 11 highlights implementation chal
 
 3. **Verification Difficulty**: Lack of real-time visibility into CBS credit states makes troubleshooting challenging.
 
-### 5.2 Practical Implications / 실무적 시사점
+### 5.2 Practical Implications
 
 #### 5.2.1 Automotive Network Design
 
@@ -709,7 +701,7 @@ For automotive network architects, our findings suggest:
 | **Scalability** | Limited by protocol | 10 Gbps and beyond |
 | **Time to Market** | 18-24 months | 12-15 months |
 
-### 5.3 Limitations and Future Work / 제한사항 및 향후 연구
+### 5.3 Limitations and Future Work
 
 #### 5.3.1 Current Limitations
 
@@ -731,7 +723,7 @@ For automotive network architects, our findings suggest:
 
 4. **Standard Evolution**: Contributing to IEEE 802.1 working group for next-generation shaping mechanisms.
 
-### 5.4 Comparison with Related Work / 관련 연구와의 비교
+### 5.4 Comparison with Related Work
 
 #### 5.4.1 Academic Research Comparison
 
@@ -753,9 +745,9 @@ Our implementation aligns with industry standards:
 
 ---
 
-## 6. Conclusion / 결론
+## 6. Conclusion
 
-### 6.1 Summary of Achievements / 연구 성과 요약
+### 6.1 Summary of Achievements
 
 This research successfully demonstrated the implementation and effectiveness of Credit-Based Shaper (CBS) mechanisms in a real-world automotive TSN switch environment. Key achievements include:
 
@@ -767,7 +759,7 @@ This research successfully demonstrated the implementation and effectiveness of 
 
 4. **Practical Deployment Guidelines**: Provided complete, reproducible configuration scripts and measurement methodologies for industry adoption.
 
-### 6.2 Scientific Contributions / 학술적 기여
+### 6.2 Scientific Contributions
 
 This work advances the field in several ways:
 
@@ -779,7 +771,7 @@ This work advances the field in several ways:
 
 4. **Industry-Academic Bridge**: Translates academic concepts into industry-ready solutions.
 
-### 6.3 Industrial Impact / 산업적 영향
+### 6.3 Industrial Impact
 
 The findings have significant implications for the automotive industry:
 
@@ -791,7 +783,7 @@ The findings have significant implications for the automotive industry:
 
 4. **Time-to-Market**: Accelerates development through proven configurations and methodologies.
 
-### 6.4 Recommendations / 권장사항
+### 6.4 Recommendations
 
 Based on our findings, we recommend:
 
@@ -810,7 +802,7 @@ Based on our findings, we recommend:
 - Provide comprehensive debugging and monitoring capabilities
 - Support dynamic CBS reconfiguration
 
-### 6.5 Future Outlook / 향후 전망
+### 6.5 Future Outlook
 
 The automotive industry's transition to zonal architectures and software-defined vehicles will increasingly rely on deterministic networking technologies. CBS, as demonstrated in this research, provides a crucial building block for this transformation. Future developments should focus on:
 
@@ -822,7 +814,7 @@ The automotive industry's transition to zonal architectures and software-defined
 
 4. **Standardization Evolution**: Contributing to next-generation IEEE 802.1 standards based on deployment experience.
 
-### 6.6 Final Remarks / 맺음말
+### 6.6 Final Remarks
 
 This research validates CBS as a practical, effective solution for automotive QoS requirements. By providing detailed implementation guidance, comprehensive performance analysis, and open-source resources, we aim to accelerate TSN adoption in the automotive industry. The transition to Ethernet-based vehicular networks with TSN capabilities represents not just a technological evolution, but a fundamental shift toward more flexible, scalable, and cost-effective automotive architectures.
 
@@ -830,7 +822,7 @@ The success of CBS implementation demonstrated here, achieving sub-millisecond j
 
 ---
 
-## References / 참고문헌
+## References
 
 ### Primary Standards
 
@@ -874,30 +866,30 @@ The success of CBS implementation demonstrated here, achieving sub-millisecond j
 
 ---
 
-## Appendix / 부록
+## Appendix
 
-### A. Configuration Files / 설정 파일
+### A. Configuration Files
 
 All configuration files are available in the `config/` directory of this repository:
 - `ipatch-insert-qos.yaml`: QoS initialization
 - `ipatch-cbs-idle-slope.yaml`: CBS parameter configuration
 - `ipatch-p8-deco-p9-enco.yaml`: Port mapping configuration
 
-### B. Measurement Scripts / 측정 스크립트
+### B. Measurement Scripts
 
 Performance measurement and traffic generation scripts are in `config/scripts/`:
 - `setup_cbs.sh`: Automated CBS configuration script
 - `generate_traffic.sh`: Traffic generation using mausezahn
 - `measure_performance.py`: Performance metric collection
 
-### C. Experimental Data / 실험 데이터
+### C. Experimental Data
 
 Raw and processed experimental data available in `data/`:
 - `experimental_results.json`: Complete measurement results
 - `baseline_measurements.csv`: Baseline performance data
 - `cbs_measurements.csv`: CBS-enabled performance data
 
-### D. Glossary / 용어집
+### D. Glossary
 
 | Term | Definition |
 |------|------------|
@@ -914,7 +906,7 @@ Raw and processed experimental data available in `data/`:
 
 ---
 
-## Acknowledgements / 감사의 글
+## Acknowledgements
 
 This research was supported by the Korea Institute for Advancement of Technology (KEIT) grant funded by the Ministry of Trade, Industry and Energy (Grant No. RS-2024-00404601).
 
@@ -925,7 +917,7 @@ Special thanks to:
 
 ---
 
-## Contact Information / 연락처
+## Contact Information
 
 For questions, collaboration opportunities, or technical support:
 - **GitHub Issues**: https://github.com/hwkim3330/0905/issues
@@ -934,7 +926,7 @@ For questions, collaboration opportunities, or technical support:
 
 ---
 
-## License / 라이선스
+## License
 
 This research and associated materials are published under an academic use license. Commercial use requires explicit permission. Please cite this work as:
 
