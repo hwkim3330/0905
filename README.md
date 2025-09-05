@@ -2,6 +2,14 @@
 
 ## 4-포트 크레딧 기반 셰이퍼(Credit-Based Shaper) TSN 스위치를 활용한 차량용 QoS 보장 구현 및 성능 평가
 
+<div align="center">
+
+[![English](https://img.shields.io/badge/Language-English-blue)](README.md)
+[![Korean](https://img.shields.io/badge/Language-한국어-red)](README_KR.md)
+[![GitHub Pages](https://img.shields.io/badge/Demo-GitHub%20Pages-green)](https://hwkim3330.github.io/0905/)
+
+</div>
+
 ---
 
 ## Abstract / 요약
