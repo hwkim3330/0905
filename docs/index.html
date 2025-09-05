@@ -3,9 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4-Port CBS TSN Switch - Research Paper</title>
+    <title>4-Port Credit-Based Shaper TSN Switch Research | Automotive Ethernet QoS</title>
+    <meta name="description" content="Research on Credit-Based Shaper (CBS) implementation in automotive TSN switches for Quality of Service provisioning. Demonstrates 99.8% packet loss reduction and 95% latency improvement.">
+    <meta name="keywords" content="TSN, Credit-Based Shaper, CBS, Automotive Ethernet, IEEE 802.1Qav, Time-Sensitive Networking, QoS, Vehicle Networks, Microchip LAN9692">
+    <meta name="author" content="TSN Research Team">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hwkim3330.github.io/0905/">
+    <meta property="og:title" content="4-Port Credit-Based Shaper TSN Switch Research">
+    <meta property="og:description" content="Comprehensive research demonstrating CBS effectiveness in automotive TSN networks with 99.8% packet loss reduction.">
+    <meta property="og:image" content="https://hwkim3330.github.io/0905/assets/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hwkim3330.github.io/0905/">
+    <meta property="twitter:title" content="4-Port Credit-Based Shaper TSN Switch Research">
+    <meta property="twitter:description" content="Research on CBS implementation in automotive TSN switches for QoS provisioning.">
+    <meta property="twitter:image" content="https://hwkim3330.github.io/0905/assets/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔧</text></svg>">
+    
     <link rel="stylesheet" href="assets/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "headline": "Implementation and Performance Evaluation of a 4-Port Credit-Based Shaper TSN Switch",
+      "author": {
+        "@type": "Organization",
+        "name": "TSN Research Team"
+      },
+      "datePublished": "2024-12-01",
+      "description": "Research demonstrating Credit-Based Shaper implementation in automotive Time-Sensitive Networking switches",
+      "keywords": "TSN, Credit-Based Shaper, Automotive Ethernet, QoS",
+      "url": "https://hwkim3330.github.io/0905/",
+      "image": "https://hwkim3330.github.io/0905/assets/og-image.png"
+    }
+    </script>
 </head>
 <body>
     <nav class="navbar">
@@ -128,28 +168,28 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>8</td>
-                            <td>10.0.100.4</td>
-                            <td>Sender</td>
-                            <td>UDP, 1 Gbps</td>
+                            <td data-label="Port">8</td>
+                            <td data-label="IP Address">10.0.100.4</td>
+                            <td data-label="Role">Sender</td>
+                            <td data-label="Traffic">UDP, 1 Gbps</td>
                         </tr>
                         <tr>
-                            <td>10</td>
-                            <td>10.0.100.3</td>
-                            <td>Sender</td>
-                            <td>UDP, 1 Gbps</td>
+                            <td data-label="Port">10</td>
+                            <td data-label="IP Address">10.0.100.3</td>
+                            <td data-label="Role">Sender</td>
+                            <td data-label="Traffic">UDP, 1 Gbps</td>
                         </tr>
                         <tr>
-                            <td>11</td>
-                            <td>10.0.100.1</td>
-                            <td>Sender</td>
-                            <td>UDP, 1 Gbps</td>
+                            <td data-label="Port">11</td>
+                            <td data-label="IP Address">10.0.100.1</td>
+                            <td data-label="Role">Sender</td>
+                            <td data-label="Traffic">UDP, 1 Gbps</td>
                         </tr>
                         <tr>
-                            <td>9</td>
-                            <td>10.0.100.2</td>
-                            <td>Receiver</td>
-                            <td>1 Gbps bottleneck</td>
+                            <td data-label="Port">9</td>
+                            <td data-label="IP Address">10.0.100.2</td>
+                            <td data-label="Role">Receiver</td>
+                            <td data-label="Traffic">1 Gbps bottleneck</td>
                         </tr>
                     </tbody>
                 </table>
@@ -195,28 +235,28 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>8 (Input)</td>
-                            <td>141,310</td>
-                            <td>274</td>
-                            <td>CBS applied ✓</td>
+                            <td data-label="Port">8 (Input)</td>
+                            <td data-label="RX Packets">141,310</td>
+                            <td data-label="TX Packets">274</td>
+                            <td data-label="Status">CBS applied ✓</td>
                         </tr>
                         <tr>
-                            <td>9 (Output)</td>
-                            <td>74</td>
-                            <td>1,158,538</td>
-                            <td>Normal operation ✓</td>
+                            <td data-label="Port">9 (Output)</td>
+                            <td data-label="RX Packets">74</td>
+                            <td data-label="TX Packets">1,158,538</td>
+                            <td data-label="Status">Normal operation ✓</td>
                         </tr>
                         <tr>
-                            <td>10 (Input)</td>
-                            <td>1,131,457</td>
-                            <td>220</td>
-                            <td>CBS not applied ✗</td>
+                            <td data-label="Port">10 (Input)</td>
+                            <td data-label="RX Packets">1,131,457</td>
+                            <td data-label="TX Packets">220</td>
+                            <td data-label="Status">CBS not applied ✗</td>
                         </tr>
                         <tr>
-                            <td>11 (Input)</td>
-                            <td>796,331</td>
-                            <td>171</td>
-                            <td>CBS not applied ✗</td>
+                            <td data-label="Port">11 (Input)</td>
+                            <td data-label="RX Packets">796,331</td>
+                            <td data-label="TX Packets">171</td>
+                            <td data-label="Status">CBS not applied ✗</td>
                         </tr>
                     </tbody>
                 </table>

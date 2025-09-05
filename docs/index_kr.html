@@ -3,9 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>4포트 CBS TSN 스위치 - 연구 논문</title>
+    <title>4포트 크레딧 기반 셰이퍼 TSN 스위치 연구 | 차량용 이더넷 QoS</title>
+    <meta name="description" content="차량용 TSN 스위치에서 크레딧 기반 셰이퍼(CBS) 구현 연구. 패킷 손실률 99.8% 감소, 지연시간 95% 개선 효과 입증. IEEE 802.1Qav 표준 기반 QoS 보장 솔루션.">
+    <meta name="keywords" content="TSN, 크레딧 기반 셰이퍼, CBS, 차량용 이더넷, IEEE 802.1Qav, 시간 민감형 네트워킹, QoS, 차량 네트워크, Microchip LAN9692">
+    <meta name="author" content="TSN 연구팀">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://hwkim3330.github.io/0905/index_kr.html">
+    <meta property="og:title" content="4포트 크레딧 기반 셰이퍼 TSN 스위치 연구">
+    <meta property="og:description" content="차량용 TSN 네트워크에서 CBS 효과를 입증한 종합적인 연구. 패킷 손실률 99.8% 감소 달성.">
+    <meta property="og:image" content="https://hwkim3330.github.io/0905/assets/og-image.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://hwkim3330.github.io/0905/index_kr.html">
+    <meta property="twitter:title" content="4포트 크레딧 기반 셰이퍼 TSN 스위치 연구">
+    <meta property="twitter:description" content="차량용 TSN 스위치에서 QoS 보장을 위한 CBS 구현 연구">
+    <meta property="twitter:image" content="https://hwkim3330.github.io/0905/assets/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🔧</text></svg>">
+    
     <link rel="stylesheet" href="assets/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ScholarlyArticle",
+      "headline": "4포트 크레딧 기반 셰이퍼 TSN 스위치 구현 및 성능 평가",
+      "author": {
+        "@type": "Organization",
+        "name": "TSN 연구팀"
+      },
+      "datePublished": "2024-12-01",
+      "description": "차량용 시간 민감형 네트워킹 스위치에서 크레딧 기반 셰이퍼 구현을 실증한 연구",
+      "keywords": "TSN, 크레딧 기반 셰이퍼, 차량용 이더넷, QoS",
+      "url": "https://hwkim3330.github.io/0905/index_kr.html",
+      "image": "https://hwkim3330.github.io/0905/assets/og-image.png",
+      "inLanguage": "ko-KR"
+    }
+    </script>
 </head>
 <body>
     <nav class="navbar">
@@ -128,28 +169,28 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>8</td>
-                            <td>10.0.100.4</td>
-                            <td>송신기</td>
-                            <td>UDP, 1 Gbps</td>
+                            <td data-label="포트">8</td>
+                            <td data-label="IP 주소">10.0.100.4</td>
+                            <td data-label="역할">송신기</td>
+                            <td data-label="트래픽">UDP, 1 Gbps</td>
                         </tr>
                         <tr>
-                            <td>10</td>
-                            <td>10.0.100.3</td>
-                            <td>송신기</td>
-                            <td>UDP, 1 Gbps</td>
+                            <td data-label="포트">10</td>
+                            <td data-label="IP 주소">10.0.100.3</td>
+                            <td data-label="역할">송신기</td>
+                            <td data-label="트래픽">UDP, 1 Gbps</td>
                         </tr>
                         <tr>
-                            <td>11</td>
-                            <td>10.0.100.1</td>
-                            <td>송신기</td>
-                            <td>UDP, 1 Gbps</td>
+                            <td data-label="포트">11</td>
+                            <td data-label="IP 주소">10.0.100.1</td>
+                            <td data-label="역할">송신기</td>
+                            <td data-label="트래픽">UDP, 1 Gbps</td>
                         </tr>
                         <tr>
-                            <td>9</td>
-                            <td>10.0.100.2</td>
-                            <td>수신기</td>
-                            <td>1 Gbps 병목</td>
+                            <td data-label="포트">9</td>
+                            <td data-label="IP 주소">10.0.100.2</td>
+                            <td data-label="역할">수신기</td>
+                            <td data-label="트래픽">1 Gbps 병목</td>
                         </tr>
                     </tbody>
                 </table>
@@ -195,28 +236,28 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>8 (입력)</td>
-                            <td>141,310</td>
-                            <td>274</td>
-                            <td>CBS 적용됨 ✓</td>
+                            <td data-label="포트">8 (입력)</td>
+                            <td data-label="수신 패킷">141,310</td>
+                            <td data-label="전송 패킷">274</td>
+                            <td data-label="상태">CBS 적용됨 ✓</td>
                         </tr>
                         <tr>
-                            <td>9 (출력)</td>
-                            <td>74</td>
-                            <td>1,158,538</td>
-                            <td>정상 동작 ✓</td>
+                            <td data-label="포트">9 (출력)</td>
+                            <td data-label="수신 패킷">74</td>
+                            <td data-label="전송 패킷">1,158,538</td>
+                            <td data-label="상태">정상 동작 ✓</td>
                         </tr>
                         <tr>
-                            <td>10 (입력)</td>
-                            <td>1,131,457</td>
-                            <td>220</td>
-                            <td>CBS 미적용 ✗</td>
+                            <td data-label="포트">10 (입력)</td>
+                            <td data-label="수신 패킷">1,131,457</td>
+                            <td data-label="전송 패킷">220</td>
+                            <td data-label="상태">CBS 미적용 ✗</td>
                         </tr>
                         <tr>
-                            <td>11 (입력)</td>
-                            <td>796,331</td>
-                            <td>171</td>
-                            <td>CBS 미적용 ✗</td>
+                            <td data-label="포트">11 (입력)</td>
+                            <td data-label="수신 패킷">796,331</td>
+                            <td data-label="전송 패킷">171</td>
+                            <td data-label="상태">CBS 미적용 ✗</td>
                         </tr>
                     </tbody>
                 </table>
